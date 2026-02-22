@@ -125,3 +125,15 @@ This case demonstrates how individual SMS artifacts can be escalated into struct
 Based on domain analysis, multi-vendor detection consensus, sandbox behavior, and social engineering characteristics, this incident is classified as a malicious smishing campaign leveraging government impersonation and fraudulent payment coercion.
 
 No interaction beyond controlled analysis was performed, and no credentials or payment information were submitted.
+
+
+
+## Enterprise Hunt Idea (If this hit corporate devices)
+- Search for URL clicks in email/collab telemetry (if the link was forwarded)
+- Search endpoint network events for domain resolution / HTTP requests
+
+Example KQL (Defender for Endpoint - conceptual):
+DeviceNetworkEvents
+| where RemoteUrl has "georgia.gov-" and RemoteUrl endswith ".cc"
+| project Timestamp, DeviceName, InitiatingProcessAccountName, RemoteUrl, RemoteIP, InitiatingProcessFileName
+| order by Timestamp desc
